@@ -9,7 +9,7 @@ import { getDatabase, ref, set } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyAu_GIcdkekULGpgdi3PJU05e8LdaLC2JM",
   authDomain: "prayertracker-db2f2.firebaseapp.com",
-  databaseURL: "https://prayertracker-db2f2-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://prayertracker-db2f2-default-rtdb.asia-southeast1.firebasedatabase.app/",
   projectId: "prayertracker-db2f2",
   storageBucket: "prayertracker-db2f2.firebasestorage.app",
   messagingSenderId: "152895762913",
@@ -28,9 +28,7 @@ function writeUserData(userId, name, email, password) {
     username: name,
     email: email,
     password: password,
-    userId: userId,
-    joinDate: new Date().toLocaleDateString('ar-EG'), 
-    isAdmin: false // Default to false, set to true for the first user
+    userId: userId
   });
 } 
 writeUserData('322389982', 'AHMAD', 'ahmad.f2001@hotmail.com', 'Asf732001'); // Example usage
