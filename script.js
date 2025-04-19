@@ -1,37 +1,3 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAu_GIcdkekULGpgdi3PJU05e8LdaLC2JM",
-  authDomain: "prayertracker-db2f2.firebaseapp.com",
-  databaseURL: "https://prayertracker-db2f2-default-rtdb.asia-southeast1.firebasedatabase.app/",
-  projectId: "prayertracker-db2f2",
-  storageBucket: "prayertracker-db2f2.firebasestorage.app",
-  messagingSenderId: "152895762913",
-  appId: "1:152895762913:web:af39deb7d8a46e921262a0",
-  measurementId: "G-MHP7CMWGRD"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-function writeUserData(userId, name, email, password) {
-  // Create a new user in the database
-  const db = getDatabase();
-  const reference = ref(db, '/users/'+ userId );
-  
-  set(reference, {
-    username: name,
-    email: email,
-    password: password,
-    userId: userId
-  });
-} 
-writeUserData('322389982', 'AHMAD', 'ahmad.f2001@hotmail.com', 'Asf732001'); // Example usage
 // Main Application Script
 document.addEventListener('DOMContentLoaded', function() {
   // Set current year in footer
