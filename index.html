@@ -1,342 +1,403 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مخطط متابعة </title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متتبع الصلوات الشهري</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>📜 مخطط متابعة رمضان</h1>
-    <p id="ramadan-date"></p>
-  </header>
-  
-  <nav>
-    <a href="#" onclick="showPage('home')">الرئيسية</a>
-    <a href="#" onclick="showPage('tracker')">المتابعة اليومية</a>
-    <a href="#" onclick="showPage('about')">عن الموقع</a>
-    <a href="#" onclick="showPage('resources')">موارد رمضانية</a>
-    <a href="#" onclick="showPage('admin')" id="admin-link" style="display:none;">لوحة التحكم</a>
-    <a href="#" onclick="showPage('profile')" id="profile-link" style="display:none;">ملفي</a>
-    <a href="#" onclick="toggleAuthModal()" id="auth-link">تسجيل الدخول</a>
-  </nav>
-  
-  <div class="container">
-    <!-- Home Page -->
-    <div id="home-page">
-      <div class="hero">
-        <h2>مرحباً بكم في مخطط متابعة رمضان</h2>
-        <p>أداة تساعدك على تنظيم عباداتك وأعمالك الصالحة خلال شهر رمضان المبارك</p>
-      </div>
-      
-      <div class="features">
-        <div class="feature-card">
-          <h3>📅 متابعة يومية</h3>
-          <p>سجل عباداتك وأعمالك الصالحة لكل يوم من أيام رمضان</p>
-        </div>
-        <div class="feature-card">
-          <h3>📊 تقدم مرئي</h3>
-          <p>شاهد تقدمك اليومي والشهري عبر مخططات بيانية واضحة</p>
-        </div>
-        <div class="feature-card">
-          <h3>📚 موارد مفيدة</h3>
-          <p>وصول إلى مجموعة من الموارد الرمضانية المفيدة</p>
-        </div>
-      </div>
-      
-      <div style="text-align: center; margin: 2rem 0;">
-        <button onclick="showPage('tracker')" class="primary-btn">
-          ابدأ المتابعة الآن
-        </button>
-      </div>
-    </div>
-    
-    <!-- Tracker Page -->
-    <div id="tracker-page" style="display: none;">
-      <div class="calendar" id="calendar"></div>
-      <div class="tracker-container" id="tracker-container">
-        <h2 id="tracker-title"></h2>
-        <div id="tracker-content"></div>
-        <div class="day-progress-container">
-          <div>التقدم لليوم:</div>
-          <div class="progress-bar-container" id="day-progress-bar-container">
-            <div class="progress-bar" id="day-progress-bar"></div>
-          </div>
-        </div>
-        <button class="back-button" onclick="goBack()">رجوع</button>
-      </div>
-    </div>
-    
-    <!-- About Page -->
-    <div id="about-page" style="display: none;">
-      <div class="about-content">
-        <h2>عن مخطط متابعة رمضان</h2>
-        <p>هذا الموقع تم تطويره لمساعدة المسلمين على متابعة عباداتهم وأعمالهم الصالحة خلال شهر رمضان المبارك.</p>
-        
-        <h3>كيفية الاستخدام</h3>
-        <ol class="instructions">
-          <li>قم بإنشاء حساب جديد أو تسجيل الدخول إذا كان لديك حساب</li>
-          <li>انتقل إلى صفحة "المتابعة اليومية"</li>
-          <li>اختر اليوم الذي تريد تسجيل عباداته</li>
-          <li>ضع علامة على المهام التي قمت بإنجازها</li>
-          <li>تتبع تقدمك عبر المخطط البياني</li>
-          <li>اطلع على إحصائياتك في صفحة "ملفي"</li>
-        </ol>
-        
-        <h3>المطور</h3>
-        <p>تم تطوير هذا الموقع بواسطة فريق متخصص لخدمة المسلمين في شهر رمضان المبارك.</p>
-      </div>
-    </div>
-    
-    <!-- Resources Page -->
-    <div id="resources-page" style="display: none;">
-      <div class="about-content">
-        <h2>موارد رمضانية مفيدة</h2>
-        <p>هنا تجد مجموعة من الموارد المفيدة لاستغلال شهر رمضان المبارك:</p>
-        
-        <h3>أذكار وأدعية</h3>
-        <ul class="resource-list" id="prayers-resources"></ul>
-        
-        <h3>تلاوات قرآنية</h3>
-        <ul class="resource-list" id="quran-resources"></ul>
-        
-        <h3>دروس ومحاضرات</h3>
-        <ul class="resource-list" id="lessons-resources"></ul>
-      </div>
-    </div>
-    
-    <!-- Profile Page -->
-    <div id="profile-page" style="display: none;">
-      <div class="about-content">
-        <div class="profile-header">
-          <div class="user-avatar-large" id="profile-avatar">م</div>
-          <div>
-            <h2 id="profile-username">مستخدم</h2>
-            <p id="profile-email">user@example.com</p>
-          </div>
-        </div>
-        
-        <div class="profile-info">
-          <p><strong>تاريخ التسجيل:</strong> <span id="profile-join-date"></span></p>
-          <p><strong>أيام رمضان المتبقية:</strong> <span id="remaining-days"></span></p>
-        </div>
-        
-        <div class="user-stats">
-          <h3>إحصائياتي</h3>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <h4>أيام مكتملة</h4>
-              <p id="completed-days">0</p>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-mosque"></i>
+                <span>متتبع العبادة</span>
             </div>
-            <div class="stat-card">
-              <h4>نسبة الإنجاز</h4>
-              <p id="completion-rate">0%</p>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">الرئيسية</a></li>
+                <li><a href="#" onclick="showPage('tracker')">المتابعة اليومية</a></li>
+                <li><a href="#" onclick="showPage('resources')">الموارد الدينية</a></li>
+                <li><a href="#" id="profile-link" onclick="showPage('profile')">ملفي الشخصي</a></li>
+                <li><a href="#" id="admin-link" onclick="showPage('admin')">لوحة التحكم</a></li>
+                <li><a href="#" id="auth-link">تسجيل الدخول</a></li>
+            </ul>
+            <div class="profile-avatar" id="profile-avatar"></div>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
             </div>
-            <div class="stat-card">
-              <h4>الصلوات الكاملة</h4>
-              <p id="completed-prayers">0</p>
-            </div>
-            <div class="stat-card">
-              <h4>الأجزاء المقروءة</h4>
-              <p id="completed-juz">0</p>
-            </div>
-          </div>
         </div>
-        
-        <div class="profile-actions">
-          <button onclick="logout()" class="secondary-btn">تسجيل الخروج</button>
-          <button onclick="showResetConfirm()" class="secondary-btn danger">إعادة تعيين بياناتي</button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Admin Page -->
-    <div id="admin-page" style="display: none;">
-      <div class="about-content">
-        <h2>لوحة التحكم الإدارية</h2>
-        
-        <div class="admin-section">
-          <h3>إدارة الموارد</h3>
-          <div class="admin-form">
-            <select id="resource-type" class="form-input">
-              <option value="prayers">أذكار وأدعية</option>
-              <option value="quran">تلاوات قرآنية</option>
-              <option value="lessons">دروس ومحاضرات</option>
-            </select>
-            <input type="text" id="resource-title" placeholder="عنوان المورد" class="form-input">
-            <input type="text" id="resource-url" placeholder="رابط المورد" class="form-input">
-            <button onclick="addResource()" class="primary-btn">إضافة مورد</button>
-          </div>
-        </div>
-        
-        <div class="admin-section">
-          <h3>إحصائيات المستخدمين</h3>
-          <div id="user-stats" class="stats-container"></div>
-        </div>
-        
-        <div class="admin-section">
-          <h3>تصدير/استيراد البيانات</h3>
-          <button onclick="exportData()" class="secondary-btn">تصدير البيانات</button>
-          <input type="file" id="import-file" accept=".json" style="display: none;">
-          <button onclick="document.getElementById('import-file').click()" class="secondary-btn">استيراد البيانات</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Auth Modal -->
-  <div id="auth-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <div id="login-form">
-        <h2>تسجيل الدخول</h2>
-        <div class="form-group">
-          <label for="username">اسم المستخدم أو البريد الإلكتروني:</label>
-          <input type="text" id="username" class="form-input">
-        </div>
-        <div class="form-group">
-          <label for="password">كلمة المرور:</label>
-          <input type="password" id="password" class="form-input">
-        </div>
-        <button onclick="login()" class="primary-btn">تسجيل الدخول</button>
-        <div id="login-message" class="message"></div>
-        <p style="text-align: center; margin-top: 1rem;">
-          ليس لديك حساب؟ <a href="#" onclick="showRegisterForm()">إنشاء حساب جديد</a>
-        </p>
-      </div>
-      
-      <div id="register-form" style="display: none;">
-        <h2>إنشاء حساب جديد</h2>
-        <div class="form-group">
-          <label for="reg-username">اسم المستخدم:</label>
-          <input type="text" id="reg-username" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label for="reg-email">البريد الإلكتروني:</label>
-          <input type="email" id="reg-email" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label for="reg-password">كلمة المرور (6 أحرف على الأقل):</label>
-          <input type="password" id="reg-password" class="form-input" required minlength="6">
-        </div>
-        <div class="form-group">
-          <label for="reg-confirm-password">تأكيد كلمة المرور:</label>
-          <input type="password" id="reg-confirm-password" class="form-input" required>
-        </div>
-        <button onclick="register()" class="primary-btn">إنشاء حساب</button>
-        <div id="register-message" class="message"></div>
-        <p style="text-align: center; margin-top: 1rem;">
-          لديك حساب بالفعل؟ <a href="#" onclick="showLoginForm()">تسجيل الدخول</a>
-        </p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Reset Confirmation Modal -->
-  <div id="reset-modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>تأكيد إعادة التعيين</h2>
-      <p>هل أنت متأكد أنك تريد إعادة تعيين جميع بيانات متابعتك؟</p>
-      <p>هذا الإجراء لا يمكن التراجع عنه وسيتم حذف جميع سجلاتك.</p>
-      <div class="modal-actions">
-        <button onclick="resetUserData()" class="secondary-btn danger">نعم، أعد التعيين</button>
-        <button onclick="closeModal()" class="primary-btn">إلغاء</button>
-      </div>
-    </div>
-  </div>
-  
-  <footer>
-    <p>© <span id="current-year"></span> مخطط متابعة رمضان - جميع الحقوق محفوظة</p>
-    <p>الإصدار 2.0.0</p>
-  </footer>
+    </nav>
 
-  <template id="template-content">
-    <div class="section">
-      <div class="section-title">فرائض 🕌</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"
-          ><span>الفجر</span><input type="checkbox" data-task="fajr"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الظهر</span><input type="checkbox" data-task="dhuhr"
-        /></label>
-        <label class="checkbox-item"
-          ><span>العصر</span><input type="checkbox" data-task="asr"
-        /></label>
-        <label class="checkbox-item"
-          ><span>المغرب</span><input type="checkbox" data-task="maghrib"
-        /></label>
-        <label class="checkbox-item"
-          ><span>العشاء</span><input type="checkbox" data-task="isha"
-        /></label>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">إصلاح 🛠️</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"
-          ><span>الغيبة</span><input type="checkbox" data-task="ghiba"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الكذب</span><input type="checkbox" data-task="kazb"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الكلام السيء</span><input type="checkbox" data-task="kalam"
-        /></label>
-      </div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">💡 العبادات ️</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"
-          ><span>التراويح </span><input type="checkbox" data-task="taraweh"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الدعاء</span><input type="checkbox" data-task="dohaw"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الاعتكاف</span><input type="checkbox" data-task="etkaf"
-        /></label>
-      </div>
-    </div>
-    
-    <div class="section">
-      <div class="section-title">🤲 الأخلاق والمعاملات الحسنة️</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"
-          ><span>صلة الرحم  </span><input type="checkbox" data-task="rahm"
-        /></label>
-        <label class="checkbox-item"
-          ><span>أفطار صائم</span><input type="checkbox" data-task="saim"
-        /></label>
-        <label class="checkbox-item"
-          ><span>الابتعاد عن الجدال والغضب</span><input type="checkbox" data-task="gedal"
-        /></label>
-        
-        <label class="checkbox-item"
-          ><span>إصلاح ذات البين</span><input type="checkbox" data-task="eslah"
-        /></label>
-      </div>
-    </div>
-  
-    
-    <div class="section">
-      <div class="section-title">ورد القرآن 📖</div>
-      <div class="checkbox-group">
-        <label class="checkbox-item"
-          ><span>جزء</span><input type="checkbox" data-task="juz"
-        /></label>
-        <label class="checkbox-item"
-          ><span>حزب</span><input type="checkbox" data-task="hizb"
-        /></label>
-      </div>
-    </div>
-  </template>
+    <!-- الصفحة الرئيسية -->
+    <section id="home-page" class="page">
+        <div class="hero">
+            <div class="container">
+                <h1>مرحباً بك في متتبع الصلوات </h1>
+                <p>أداة رقمية تساعدك على متابعة عباداتك خلال الشهر </p>
+                <div class="ramadan-info">
+                    <p id="ramadan-date"> 1445هـ: 22 مارس - 21 أبريل 2024</p>
+                    <div class="countdown">
+                        <span id="remaining-days">30</span> يوم متبقية للشهر
+                    </div>
+                </div>
+                <div class="cta-buttons">
+                  <button class="digital-btn" onclick="showPage('tracker')" style="font-size: 18px; padding: 12px 24px;">ابدأ المتابعة</button>
+                  <button class="digital-btn" onclick="showPage('resources')" style="font-size: 18px; padding: 12px 24px;">استكشف الموارد</button>
+                </div>
+            </div>
+        </div>
+        <div class="digital-buttons-container">
+          <h3 class="digital-buttons-title">الكشف الرقمي</h3>
+          <div class="digital-buttons">
+          
 
-  <script src="script.js"></script>
-  <script src="admin.js"></script>
+        <div class="features">
+            <div class="container">
+                <div class="feature-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>متابعة يومية</h3>
+                    <p>سجل صلواتك وعباداتك اليومية خلال الشهر </p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>إحصائيات وتقارير</h3>
+                    <p>اطلع على تقارير أدائك ومستوى تقدمك</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-book-quran"></i>
+                    <h3>موارد دينية</h3>
+                    <p>مجموعة من الأدعية والتلاوات والدروس المفيدة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- صفحة المتابعة اليومية -->
+    <section id="tracker-page" class="page">
+        <div class="container">
+            <h2 class="page-title">المتابعة اليومية</h2>
+            <div class="calendar-container">
+                <div id="calendar" class="calendar-grid"></div>
+            </div>
+            
+            <!-- نافذة متابعة اليوم -->
+            <div id="tracker-container" class="tracker-modal">
+                <div class="tracker-header">
+                    <h3 id="tracker-title">اليوم 1</h3>
+                    <button class="close-btn" onclick="goBack()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="day-progress-bar" class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">0% مكتمل</span>
+                </div>
+                <div id="tracker-content" class="tracker-content">
+                    <!-- سيتم تحميل المحتوى من القالب -->
+                </div>
+            </div>
+            
+            <!-- قالب المهام -->
+            <template id="template-content">
+                <div class="tasks-section">
+                    <h4><i class="fas fa-clock"></i> الصلوات المفروضة</h4>
+                    <div class="tasks-group" id="prayers-group">
+                        <label class="checkbox-item">
+                            <span>صلاة الفجر</span>
+                            <input type="checkbox" data-task="fajr">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>صلاة الظهر</span>
+                            <input type="checkbox" data-task="dhuhr">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>صلاة العصر</span>
+                            <input type="checkbox" data-task="asr">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>صلاة المغرب</span>
+                            <input type="checkbox" data-task="maghrib">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>صلاة العشاء</span>
+                            <input type="checkbox" data-task="isha">
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="tasks-section">
+                    <h4><i class="fas fa-book-quran"></i> القرآن الكريم</h4>
+                    <div class="tasks-group" id="quran-group">
+                        <label class="checkbox-item">
+                            <span>جزء من القرآن</span>
+                            <input type="checkbox" data-task="juz">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>حزب من القرآن</span>
+                            <input type="checkbox" data-task="hizb">
+                        </label>
+                        <button class="add-task-btn" onclick="addCustomTask('القرآن الكريم', 'quran')">
+                            <i class="fas fa-plus"></i> إضافة عبادة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tasks-section">
+                    <h4><i class="fas fa-hands-praying"></i> الأذكار والأدعية</h4>
+                    <div class="tasks-group" id="adhkar-group">
+                        <label class="checkbox-item">
+                            <span>أذكار الصباح</span>
+                            <input type="checkbox" data-task="morning_adhkar">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>أذكار المساء</span>
+                            <input type="checkbox" data-task="evening_adhkar">
+                        </label>
+                        
+                        <button class="add-task-btn" onclick="addCustomTask('الأذكار والأدعية', 'adhkar')">
+                            <i class="fas fa-plus"></i> إضافة عبادة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tasks-section">
+                    <h4><i class="fas fa-star"></i> عبادات إضافية</h4>
+                    <div class="tasks-group" id="extra-group">
+                      
+                        <label class="checkbox-item">
+                            <span>صدقة</span>
+                            <input type="checkbox" data-task="sadaqa">
+                        </label>
+                        <label class="checkbox-item">
+                            <span>قيام الليل</span>
+                            <input type="checkbox" data-task="qiyam">
+                        </label>
+                        <button class="add-task-btn" onclick="addCustomTask('العبادات الإضافية', 'extra')">
+                            <i class="fas fa-plus"></i> إضافة عبادة
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </section>
+
+    <!-- صفحة الموارد الدينية -->
+    <section id="resources-page" class="page">
+        <div class="container">
+            <h2 class="page-title">الموارد الدينية</h2>
+            
+            <div class="resources-tabs">
+                <button class="tab-btn active" onclick="openTab('prayers')">
+                    <i class="fas fa-hands-praying"></i> أذكار وأدعية
+                </button>
+                <button class="tab-btn" onclick="openTab('quran')">
+                    <i class="fas fa-book-quran"></i> تلاوات قرآنية
+                </button>
+                <button class="tab-btn" onclick="openTab('lessons')">
+                    <i class="fas fa-graduation-cap"></i> دروس ومحاضرات
+                </button>
+            </div>
+            
+            <div id="prayers" class="tab-content active">
+                <h3><i class="fas fa-hands-praying"></i> أذكار وأدعية</h3>
+                <ul id="prayers-resources" class="resources-list">
+                    <!-- سيتم تحميل الموارد من قاعدة البيانات -->
+                </ul>
+            </div>
+            
+            <div id="quran" class="tab-content">
+                <h3><i class="fas fa-book-quran"></i> تلاوات قرآنية</h3>
+                <ul id="quran-resources" class="resources-list">
+                    <!-- سيتم تحميل الموارد من قاعدة البيانات -->
+                </ul>
+            </div>
+            
+            <div id="lessons" class="tab-content">
+                <h3><i class="fas fa-graduation-cap"></i> دروس ومحاضرات</h3>
+                <ul id="lessons-resources" class="resources-list">
+                    <!-- سيتم تحميل الموارد من قاعدة البيانات -->
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- صفحة الملف الشخصي -->
+    <section id="profile-page" class="page">
+        <div class="container">
+            <div class="profile-header">
+                <div class="avatar-large" id="profile-avatar-large"></div>
+                <div class="profile-info">
+                    <h2 id="profile-username">اسم المستخدم</h2>
+                    <p id="profile-email">user@example.com</p>
+                    <p>تاريخ التسجيل: <span id="profile-join-date">01 رمضان 1445</span></p>
+                </div>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h4>الأيام المتبقية</h4>
+                    <p id="remaining-days">30</p>
+                </div>
+                <div class="stat-card">
+                    <h4>الأيام المكتملة</h4>
+                    <p id="completed-days">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>نسبة الإنجاز</h4>
+                    <p id="completion-rate">0%</p>
+                </div>
+                <div class="stat-card">
+                    <h4>الصلوات المكتملة</h4>
+                    <p id="completed-prayers">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>الأجزاء المقروءة</h4>
+                    <p id="completed-juz">0</p>
+                </div>
+            </div>
+            
+            <div class="progress-calendar">
+                <h3>التقدم الشهري</h3>
+                <div class="calendar-grid">
+                    <!-- سيتم تحميل التقويم من البيانات -->
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="secondary-btn" onclick="showResetConfirm()">
+                    <i class="fas fa-redo"></i> إعادة تعيين البيانات
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- صفحة لوحة التحكم الإدارية -->
+    <section id="admin-page" class="page">
+        <!-- سيتم تحميل المحتوى ديناميكيًا -->
+    </section>
+
+    <!-- نافذة تسجيل الدخول -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تسجيل الدخول</h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div id="login-message" class="message"></div>
+                <button class="primary-btn" onclick="login()">تسجيل الدخول</button>
+                <p class="auth-link">ليس لديك حساب؟ <a href="#" onclick="showRegisterForm()">إنشاء حساب جديد</a></p>
+                <p class="auth-link"><a href="#" onclick="showResetPasswordForm()">نسيت كلمة المرور؟</a></p>
+            </div>
+            
+            <div id="register-form" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label for="reg-username">اسم المستخدم</label>
+                    <input type="text" id="reg-username" placeholder="اختر اسم مستخدم">
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">البريد الإلكتروني</label>
+                    <input type="email" id="reg-email" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">كلمة المرور</label>
+                    <input type="password" id="reg-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm-password">تأكيد كلمة المرور</label>
+                    <input type="password" id="reg-confirm-password" placeholder="أعد إدخال كلمة المرور">
+                </div>
+                <div id="register-message" class="message"></div>
+                <button class="primary-btn" onclick="register()">إنشاء حساب</button>
+                <p class="auth-link">لديك حساب بالفعل؟ <a href="#" onclick="showLoginForm()">تسجيل الدخول</a></p>
+            </div>
+            
+            <div id="reset-form" class="auth-form" style="display: none;">
+                <div class="form-group">
+                    <label for="reset-email">البريد الإلكتروني</label>
+                    <input type="email" id="reset-email" placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div id="reset-message" class="message"></div>
+                <button class="primary-btn" onclick="resetPassword()">إرسال رابط التعيين</button>
+                <p class="auth-link"><a href="#" onclick="showLoginForm()">العودة لتسجيل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد إعادة تعيين البيانات -->
+    <div id="reset-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تأكيد الإجراء</h3>
+                <button class="close-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من أنك تريد إعادة تعيين جميع بيانات المتابعة؟ هذا الإجراء لا يمكن التراجع عنه.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="closeModal()">إلغاء</button>
+                <button class="primary-btn" onclick="resetUserData()">تأكيد الإعادة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>متتبع العبادة</h4>
+                    <p>أداة رقمية تساعدك على متابعة عباداتك خلال الشهر </p>
+                </div>
+                <div class="footer-section">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPage('home')">الرئيسية</a></li>
+                        <li><a href="#" onclick="showPage('tracker')">المتابعة اليومية</a></li>
+                        <li><a href="#" onclick="showPage('resources')">الموارد الدينية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>تواصل معنا</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> متتبع العبادة. جميع الحقوق محفوظة لكتلة رؤية الطلابية.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- إضافة Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    
+    <!-- ملفات JavaScript -->
+    <script src="admin.js"></script>
+    <script src="script.js"></script>
+    <script src="resources.json"></script>
 </body>
 </html>
